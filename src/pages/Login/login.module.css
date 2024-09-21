@@ -1,0 +1,85 @@
+.login-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1D013E;
+    background-image: linear-gradient(to bottom right, #684D70, #A05969, #CB6652, #E2703C);
+}
+
+.login-inputs {
+    display: flex;
+    width: 70%;
+    height: 70%;
+}
+
+.login-item {
+    flex-basis: 0;
+}
+
+.login-image {
+    flex: 6;
+    user-select: none;
+    border-radius: 20px 0 0 20px;
+    pointer-events: none;
+    background-size: cover;
+    background-image: url("../../assets/png/login-light.jpg");
+}
+
+.login-information {
+    flex: 4;
+    display: flex;
+    padding: 24px;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 0 20px 20px 0;
+    justify-content: space-around;
+}
+
+.wrapper {
+    gap: 16px;
+    width: 420px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.title-login {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.remember-me {
+    margin: 16px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.forgot-passwd {
+    text-decoration: none;
+    padding-block-start: 4px;
+    color: #009be3;
+    cursor: url("/src/assets/svg/pointer-hand.svg") 10 10, pointer;
+}
+
+.forgot-passwd:hover {
+    color: #0082ba;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .login-container {
+        background-image: linear-gradient(to bottom right, #070012, #2C036B, #2C036D, #3595D1);
+    }
+
+    .login-image {
+        background-image: url("../../assets/png/login-dark.jpg");
+    }
+
+}

@@ -1,0 +1,23 @@
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: url("/src/assets/svg/pointer-hand.svg") 10 10, pointer;
+}
+
+.checkbox-wrapper:hover .label-text {
+    opacity: .65;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: inherit;
+}
+
+.label-text {
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: 300;
+    user-select: none;
+    padding-block-start: 4px;
+}

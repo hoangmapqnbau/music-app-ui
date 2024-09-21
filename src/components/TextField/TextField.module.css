@@ -1,0 +1,102 @@
+:root {
+    --input-field-space: .50rem;
+}
+
+.i-form-field {
+    width: 100%;
+}
+
+.i-field {
+    gap: 12px;
+    width: 100%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    z-index: 2;
+    user-select: none;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: row ;
+    align-items: center;
+    gap: 8px;   
+}
+
+.label-input {
+    font-size: 16px;
+    font-weight: 300;
+    position: absolute;
+    top: 32px;
+    left: 4%;
+    transform: scale(1);
+    transition: top 300ms ease, left 300ms ease;
+    z-index: 1;
+    color: #555;
+    cursor: text;
+    user-select: none;
+}
+
+.has-label {
+    padding-top: 24px;
+}
+
+.i-hasvalue .label-input,
+.i-field:focus-within .label-input {
+    top: 0;
+    left: 0;
+    opacity: 1;
+    font-weight: 400;
+    color: #000;
+    cursor: default;
+}
+
+.input-field::placeholder {
+    color: transparent;
+    transition: color 300ms ease;
+}
+
+.input-field:focus::placeholder {
+    color: #aaa;
+}
+
+.input-field {
+    height: 2rem;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    padding-block: var(--input-field-space);
+    padding-inline: var(--input-field-space);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-field:hover {
+    border-color: #8d99ae;
+}
+
+.input-field:focus {
+    border: solid 1px #009bde;
+}
+
+.show-pass {
+    right: 16px;
+    width: 24px;
+    height: 24px;
+    display: block;
+    position: absolute;
+    background-color: #B0B0B0;
+    mask-image: url('/src/assets/svg/eye.svg');
+    cursor: url("/src/assets/svg/pointer-hand.svg") 10 10, pointer;
+}
+
+
+.show-pass.disabled {
+    cursor: url("/src/assets/svg/disabled-cursor.svg"), auto;
+}
+
+
+.active {
+    background-color: #009bde;
+}
