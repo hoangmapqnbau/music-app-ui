@@ -1,6 +1,6 @@
 .login-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100svw;
+    height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,9 +42,18 @@
     gap: 16px;
     width: 420px;
     display: flex;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
     align-items: flex-start;
     flex-direction: column;
     justify-content: space-around;
+    transition: opacity 2s ease, transform 2s ease;
+}
+
+.wrapper.appear {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .title-login {
@@ -66,10 +75,25 @@
     padding-block-start: 4px;
     color: #009be3;
     cursor: url("/src/assets/svg/pointer-hand.svg") 10 10, pointer;
+    user-select: none;
 }
 
 .forgot-passwd:hover {
     color: #0082ba;
+}
+
+.login-button {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.signup-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -82,4 +106,33 @@
         background-image: url("../../assets/png/login-dark.jpg");
     }
 
+}
+
+@media only screen and (max-width: 670px) {
+    .login-information {
+        width: 100%;
+        border-radius: 24px;
+    }
+
+    .login-image {
+        display: none;
+    }
+
+    .wrapper {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .remember-me {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .login-button {
+        justify-content: center;
+        align-items: center;
+    }
 }

@@ -18,9 +18,9 @@
 
 .input-wrapper {
     display: flex;
-    flex-direction: row ;
+    flex-direction: row;
     align-items: center;
-    gap: 8px;   
+    gap: 8px;
 }
 
 .label-input {
@@ -78,6 +78,15 @@
 
 .input-field:focus {
     border: solid 1px #009bde;
+}
+
+.input-field.i-error {
+    border: 1px solid #D51923;
+}
+
+.error-message {
+    color: #D51923;
+    padding-inline-start: 8px;
 }
 
 .show-pass {

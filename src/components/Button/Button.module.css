@@ -1,0 +1,56 @@
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.button-wrapper.i-disabled {
+    cursor: url("/src/assets/svg/disabled-cursor.svg") 10 10, auto;
+}
+
+.button {
+    outline: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    height: 32px;
+    padding: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: .25rem;
+    cursor: url("/src/assets/svg/pointer-hand.svg") 10 10, pointer;
+}
+
+.primary {
+    background-color: #009bde;
+    color: #ffffdf;
+}
+
+.primary:is(:hover, :focus) {
+    background-color: #0877A7;
+}
+
+.primary:focus {
+    outline: 1px solid #A8DAEF;
+}
+
+.link {
+    background-color: transparent;
+    color: #0082ba;
+}
+
+.link:hover {
+    background-color: #E5F0F5;
+    color: #0082ba;
+}
+
+.button:disabled {
+    outline: none;
+    cursor: default;
+    opacity: .6;
+    filter: grayscale(0.1);
+    pointer-events: none;
+    box-shadow: none;
+}

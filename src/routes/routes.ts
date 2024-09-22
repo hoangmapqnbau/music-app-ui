@@ -4,6 +4,10 @@ import LoginPage from '../pages/Login/Login';
 
 const publicRoutes: IRoutes[] = [
   {
+    path: '/login',
+    element: LoginPage,
+  },
+  {
     path: '/',
     element: LoginPage,
   },

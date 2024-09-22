@@ -1,38 +1,37 @@
 import React from 'react';
-import Styles from './Button.module.css';
+
 import bcx from '../../utils/bindingClassNames';
 
+import Styles from './Button.module.css';
 const cls = bcx(Styles);
 
 interface ButtonProps {
-  text: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  text?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
-  name?: string;
   active?: boolean;
   className?: string;
-  type?: 'primary' | 'falt' | 'link' | 'outline';
+  type?: 'primary' | 'flat' | 'link' | 'outline';
   icon?: JSX.Element;
+  style?: React.CSSProperties
 }
 
 const Button: React.FC<ButtonProps> = ({
   text,
   onClick,
   disabled = false,
-  name = '',
-  active = false,
   className,
   type = 'primary',
   icon,
+  style
 }) => {
   return (
-    <div className={cls('button-wrapper')}>
+    <div className={cls(['button-wrapper', disabled ? "i-disabled" : ''])}>
       <button
-        name={name}
-        className={cls(['button', active ? 'active' : '', className, type])}
+        className={cls(['button', className, type])}
         onClick={onClick}
         disabled={disabled}
-        style={{ marginRight: '8px' }}
+        style={style}
       >
         {text}
       </button>
