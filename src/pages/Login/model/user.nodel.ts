@@ -8,8 +8,8 @@ export interface IUser {
 }
 
 const INIT_USER_MODEL: IUser = {
-  username: '',
-  password: '',
+  username: 'nhhoang5@tma.com.vn',
+  password: '12345',
   isChecked: false,
   reTypePassword: '',
   fullName: '',

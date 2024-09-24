@@ -1,5 +1,8 @@
-const baseUserUri = 'http://localhost:3000/users';
+const BASE = 'http://localhost:3001';
 
-const CREATE_USER = baseUserUri;
+const USER_URI = `${BASE}/users`;
 
-export { CREATE_USER };
+const AUTH_LOGIN_URI = `${BASE}/auth/login`
+
+
+export { USER_URI, AUTH_LOGIN_URI };

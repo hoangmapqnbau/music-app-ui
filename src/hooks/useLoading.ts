@@ -16,7 +16,7 @@ const useLoading = (ms = 1000): [boolean, React.Dispatch<React.SetStateAction<bo
     handleLoading();
 
     return () => {
-      timeout.current = 0;
+      clearTimeout(timeout.current);
     };
   }, [isLoading]);
 
