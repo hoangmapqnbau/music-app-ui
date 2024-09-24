@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 import TextField from '../../components/TextField/TextField';
 import bcx from '../../utils/bindingClassNames';
@@ -11,17 +11,38 @@ import INIT_USER_MODEL, { IUser } from './model/user.nodel';
 import styles from './login.module.css';
 import Spinner from '../../components/LoadingSpinner/LoadingSpinner';
 import useLoading from '../../hooks/useLoading';
-import { CREATE_USER } from '../../constant/api';
+
+import { AUTH_LOGIN_URI, USER_URI } from '../../constant/api';
+import NotificationToast, { NotificationProps } from '../../components/Notification/Notification';
 
 const cls = bcx(styles);
 
 const CREATED_STATUS = 201;
+
+type TNotification = NotificationProps & {
+  show: boolean;
+};
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useLoading();
   const [dataInfor, setDataInfor] = useState(INIT_USER_MODEL);
   const [signUp, setSignUp] = useState(false);
   const [errors, setErrors] = useState(INIT_USER_MODEL);
+  const [notification, setNotification] = useState<TNotification>({ show: false, type: 'success', text: '' });
+  const timeReference = useRef(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (notification.show) {
+      timeReference.current = window.setInterval(() => {
+        setNotification({ show: false, type: 'success', text: '' });
+      }, 3500);
+    }
+
+    return () => {
+      clearInterval(timeReference.current); // Properly clear the interval
+    };
+  }, [notification.show]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
@@ -93,6 +114,8 @@ const LoginPage = () => {
 
     if (signUp) {
       registerUser();
+    } else {
+      loginUser();
     }
   };
 
@@ -100,39 +123,90 @@ const LoginPage = () => {
     try {
       const { username: email, password, passWordHint, reTypePassword, fullName }: IUser = dataInfor;
       const userObject = { email, password, passWordHint, reTypePassword, fullName };
-      const response = await axios.post(CREATE_USER, userObject);
+      const response = await axios.post(USER_URI, userObject);
       if (response?.status === CREATED_STATUS) {
         setSignUp(false);
         setIsLoading(true);
+        setNotification((prev) => {
+          return {
+            ...prev,
+            show: true,
+            type: 'success',
+            text: 'User has been added successfully!!',
+          };
+        });
       }
     } catch (error: any) {
-      // Handle error (user already exists or other errors)
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         if (error.response.status === 409) {
-          // User already exists
-          console.error('Error: User already exists');
-          alert('User already exists, please try another email');
+          setNotification((prev) => {
+            return {
+              ...prev,
+              show: true,
+              type: 'error',
+              text: 'Error: User already exists',
+            };
+          });
         } else {
-          // Other server-side errors
-          console.error('Error:', error.response.data.message);
-          alert('An error occurred: ' + error.response.data.message);
+          setNotification((prev) => {
+            return {
+              ...prev,
+              show: true,
+              type: 'error',
+              text: error.response.data.message,
+            };
+          });
         }
       } else if (error.request) {
-        // The request was made but no response was received
-        console.error('Error: No response received from server');
-        alert('No response from the server. Please try again later.');
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error:', error.message);
-        alert('An unexpected error occurred.');
+        setNotification((prev) => {
+          return {
+            ...prev,
+            show: true,
+            type: 'error',
+            text: 'No response from the server. Please try again later.',
+          };
+        });
       }
+    }
+  };
+
+  const loginUser = async () => {
+    try {
+      if (dataInfor.username && dataInfor.password) {
+        const { username, password } = dataInfor;
+        const request = await axios.post(AUTH_LOGIN_URI, { username, password });
+        const accessToken = request.data['access_token'];
+        if (!accessToken) {
+          setNotification((prev) => {
+            return {
+              ...prev,
+              show: true,
+              type: 'error',
+              text: request.data.message || 'Please trying later',
+            };
+          });
+        }
+
+        console.log(accessToken);
+
+        navigate('/');
+        return;
+      }
+    } catch (error: any) {
+      setNotification((prev) => {
+        return {
+          ...prev,
+          show: true,
+          type: 'error',
+          text: error.message,
+        };
+      });
     }
   };
 
   return (
     <>
+      {notification.show ? <NotificationToast text={notification.text} type={notification.type} /> : null}
       <div className={cls('login-container')}>
         <div className={cls('login-inputs')}>
           <div className={cls(['login-image', 'login-item'])}></div>
