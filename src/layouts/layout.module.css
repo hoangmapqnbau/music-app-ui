@@ -1,0 +1,41 @@
+:root {
+    --header-height: 64px;
+    --sidebar-width: 360px;
+    --padding-tr: 16px;
+    --content-padding: 24px;
+    --footer-height: 72px;
+}
+
+main {
+    position: relative;
+}
+
+#content {
+    display: grid;
+    height: 100dvh;
+    width: 100dvw;
+    position: relative;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    gap: 8px;
+    padding: 8px;
+    background: linear-gradient(to left top, #26292f, #322833, #27282f, #32404b);
+}
+
+/* Content */
+.main-content {
+    background-color: #121319;
+    height: calc(100dvh - var(--header-height) - var(--padding-tr) - var(--footer-height));
+    overflow-y: auto;
+    padding: var(--content-padding);
+    width: 100%;
+}
+
+footer {
+    height: var(--footer-height);
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #313335;
+    width: 100%;
+    background: #121319;
+    border-radius: 0 0 0 8px;
+}

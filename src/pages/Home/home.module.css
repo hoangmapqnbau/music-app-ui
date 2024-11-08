@@ -1,0 +1,33 @@
+.home-wrapper * {
+    color: #f1faee;
+}
+
+.recently-played .played-items {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    width: calc(100dvw - var(--sidebar-width) - var(--padding-tr) - (var(--content-padding) * 2));
+    overflow-y: hidden;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    transition: transform 0.3s ease;
+}
+
+.recently-played .played-items::-webkit-scrollbar {
+    height: 8px;
+}
+
+.recently-played:hover .played-items::-webkit-scrollbar {
+    height: 8px;
+    visibility: visible;
+}
+
+.recently-played:hover .played-items::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.recently-played:hover .played-items::-webkit-scrollbar-thumb {
+    background-color: hsl(215, 15%, 65%);
+    border-radius: 4px;
+}
