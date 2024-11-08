@@ -1,0 +1,42 @@
+.music-card {
+    text-align: center;
+    display: flex;
+    padding: 8px;
+    gap: 8px;
+    flex-direction: column;
+    user-select: none;
+    cursor: pointer;
+}
+
+.music-card:hover {
+    background-color: rgba(68,71,79, .8);
+    border-radius: 8px;
+}
+
+.play-icon {
+    visibility: hidden;
+}
+
+.music-card:hover .play-icon {
+    visibility: visible;
+    margin-left: auto;
+}
+
+.music-card * {
+    width: 190px;
+}
+
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.image-card {
+    border-radius: 8px;
+    max-width: 190px;
+    max-height: 187px;
+    min-width: 190px;
+    min-height: 187px;
+    object-fit: cover;
+}

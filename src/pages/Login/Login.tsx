@@ -6,31 +6,38 @@ import TextField from '../../components/TextField/TextField';
 import bcx from '../../utils/bindingClassNames';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
-import INIT_USER_MODEL, { IUser } from './model/user.nodel';
 
 import styles from './login.module.css';
 import Spinner from '../../components/LoadingSpinner/LoadingSpinner';
-import useLoading from '../../hooks/useLoading';
 
 import { AUTH_LOGIN_URI, USER_URI } from '../../constant/api';
+import INIT_USER_MODEL, { IUser } from './model/user.nodel';
 import NotificationToast, { NotificationProps } from '../../components/Notification/Notification';
+import { clearUserFields, userLoggedIn } from '../../store/UserStore/UserAction';
+
+import validate from '../../utils/userValidation';
+import useLoading from '../../hooks/useLoading';
+import useUserContext from '../../hooks/useUserContext';
+import { setCookie  } from '../../utils/cookie';
 
 const cls = bcx(styles);
 
 const CREATED_STATUS = 201;
+const USER_EXISTS = 'Error: User already exists';
 
 type TNotification = NotificationProps & {
   show: boolean;
 };
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useLoading();
-  const [dataInfor, setDataInfor] = useState(INIT_USER_MODEL);
   const [signUp, setSignUp] = useState(false);
+  const [user, setUser] = useState(INIT_USER_MODEL);
   const [errors, setErrors] = useState(INIT_USER_MODEL);
   const [notification, setNotification] = useState<TNotification>({ show: false, type: 'success', text: '' });
   const timeReference = useRef(0);
-  const navigate = useNavigate();
+  const { currentUser, dispatch } = useUserContext();
 
   useEffect(() => {
     if (notification.show) {
@@ -40,168 +47,105 @@ const LoginPage = () => {
     }
 
     return () => {
-      clearInterval(timeReference.current); // Properly clear the interval
+      clearInterval(timeReference.current);
     };
   }, [notification.show]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, checked, value } = e.target;
-
-    setDataInfor((prev) => {
-      return {
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      };
-    });
-
-    setErrors((prev) => {
-      return {
-        ...prev,
-        [name]: '',
-      };
-    });
+    const { name, value } = e.target;
+    setUser((pre) => ({ ...pre, [name]: value }));
+    setErrors({ [name]: '' });
   };
 
   const handleSignInSignUp = () => {
     setIsLoading(true);
     setSignUp((prev) => !prev);
-    setDataInfor(INIT_USER_MODEL);
+    dispatch(clearUserFields());
     setErrors(INIT_USER_MODEL);
   };
 
-  const validate = () => {
-    const newErrors: any = {};
-
-    if (!dataInfor.username) {
-      newErrors.username = 'Email or username is required';
-    } else if (/\s/.test(dataInfor.username)) {
-      newErrors.username = 'Email or username cannot contain spaces';
-    } else if (dataInfor.username.length < 4) {
-      newErrors.username = 'Email or username must be at least 4 characters long';
-    }
-
-    if (!dataInfor.password) {
-      newErrors.password = 'Password is required';
-    } else if (dataInfor.password.length < 4) {
-      newErrors.password = 'Password must be at least 4 characters long';
-    }
-
-    if (signUp) {
-      if (!dataInfor.reTypePassword) {
-        newErrors.reTypePassword = 'Please confirm your password';
-      } else if (dataInfor.reTypePassword !== dataInfor.password) {
-        newErrors.reTypePassword = 'Passwords do not match';
-      } else if (dataInfor.reTypePassword.length < 4) {
-        newErrors.reTypePassword = 'Re-type password must be at least 4 characters long';
-      }
-
-      if (!dataInfor.passWordHint) {
-        newErrors.passWordHint = 'Password hint is required';
-      } else if (dataInfor.passWordHint.length < 4) {
-        newErrors.passWordHint = 'Password hint must be at least 4 characters long';
-      }
-    }
-
-    return newErrors;
-  };
-
   const handleSubmitForm = () => {
-    const formErrors = validate();
+    const formErrors = validate(user, signUp);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
     }
 
-    if (signUp) {
-      registerUser();
-    } else {
-      loginUser();
-    }
+    signUp ? registerUser() : loginUser();
   };
 
   const registerUser = async () => {
+    const { username: email, password, passWordHint, reTypePassword, fullName }: IUser = currentUser;
+    const userObject = { email: email?.trim(), password, passWordHint, reTypePassword, fullName };
+
     try {
-      const { username: email, password, passWordHint, reTypePassword, fullName }: IUser = dataInfor;
-      const userObject = { email, password, passWordHint, reTypePassword, fullName };
       const response = await axios.post(USER_URI, userObject);
-      if (response?.status === CREATED_STATUS) {
-        setSignUp(false);
-        setIsLoading(true);
-        setNotification((prev) => {
-          return {
-            ...prev,
-            show: true,
-            type: 'success',
-            text: 'User has been added successfully!!',
-          };
-        });
-      }
+      handleResponse(response);
     } catch (error: any) {
-      if (error.response) {
-        if (error.response.status === 409) {
-          setNotification((prev) => {
-            return {
-              ...prev,
-              show: true,
-              type: 'error',
-              text: 'Error: User already exists',
-            };
-          });
-        } else {
-          setNotification((prev) => {
-            return {
-              ...prev,
-              show: true,
-              type: 'error',
-              text: error.response.data.message,
-            };
-          });
-        }
-      } else if (error.request) {
-        setNotification((prev) => {
-          return {
-            ...prev,
-            show: true,
-            type: 'error',
-            text: 'No response from the server. Please try again later.',
-          };
-        });
-      }
+      handleError(error);
+    }
+  };
+
+  const handleResponse = (response: any) => {
+    if (response?.status === CREATED_STATUS) {
+      setSignUp(false);
+      setIsLoading(true);
+      setNotification({
+        show: true,
+        type: 'success',
+        text: 'User has been registered successfully!!',
+      });
+    }
+  };
+
+  const handleError = (error: any) => {
+    if (error.response) {
+      const errorMessage = error.response.status === 409 ? USER_EXISTS : error.response.data.message;
+
+      setNotification({
+        show: true,
+        type: 'error',
+        text: errorMessage,
+      });
+    } else if (error.request) {
+      setNotification({
+        show: true,
+        type: 'error',
+        text: 'No response from the server. Please try again later.',
+      });
     }
   };
 
   const loginUser = async () => {
+    const { username, password } = user;
     try {
-      if (dataInfor.username && dataInfor.password) {
-        const { username, password } = dataInfor;
-        const request = await axios.post(AUTH_LOGIN_URI, { username, password });
-        const accessToken = request.data['access_token'];
-        if (!accessToken) {
-          setNotification((prev) => {
-            return {
-              ...prev,
-              show: true,
-              type: 'error',
-              text: request.data.message || 'Please trying later',
-            };
-          });
-        }
+      const response = await axios.post(AUTH_LOGIN_URI, { username, password });
 
-        console.log(accessToken);
+      const { access_token: accessToken, message } = response.data;
 
-        navigate('/');
+      if (!accessToken) {
+        triggerNotification('error', message);
         return;
       }
+
+      const { userId, email, fullName } = response.data.userResponse;
+
+      setCookie(accessToken);
+      dispatch(userLoggedIn({ userId: userId, username: email, fullName, authenticated: true }));
+      localStorage.setItem('user', JSON.stringify(response.data.userResponse));
+      navigate('/');
     } catch (error: any) {
-      setNotification((prev) => {
-        return {
-          ...prev,
-          show: true,
-          type: 'error',
-          text: error.message,
-        };
-      });
+      triggerNotification('error', error.message || 'An error occurred');
     }
+  };
+
+  const triggerNotification = (type: 'success' | 'error', text: string) => {
+    setNotification((prev) => ({
+      ...prev,
+      show: true,
+      type,
+      text,
+    }));
   };
 
   return (
@@ -226,7 +170,7 @@ const LoginPage = () => {
                     id="email"
                     name="username"
                     placeholder="Input email or username"
-                    value={dataInfor.username}
+                    value={user.username}
                     onChange={handleChange}
                     error={errors.username}
                   />
@@ -236,7 +180,7 @@ const LoginPage = () => {
                     type="password"
                     name="password"
                     placeholder="Input your password"
-                    value={dataInfor.password}
+                    value={user.password}
                     error={errors.password}
                     onChange={handleChange}
                   />
@@ -250,7 +194,7 @@ const LoginPage = () => {
                         error={errors.reTypePassword}
                         name="reTypePassword"
                         placeholder="Re-type password"
-                        value={dataInfor.reTypePassword}
+                        value={user.reTypePassword}
                         onChange={handleChange}
                       />
                       <TextField
@@ -261,7 +205,7 @@ const LoginPage = () => {
                         type="password"
                         name="passWordHint"
                         placeholder="Backup this to find your password"
-                        value={dataInfor.passWordHint}
+                        value={user.passWordHint}
                         onChange={handleChange}
                       />
                       <TextField
@@ -270,19 +214,14 @@ const LoginPage = () => {
                         error={errors.fullName}
                         name="fullName"
                         placeholder="What is your name?"
-                        value={dataInfor.fullName}
+                        value={user.fullName}
                         onChange={handleChange}
                       />
                     </>
                   ) : null}
                   {!signUp ? (
                     <div className={cls('remember-me')}>
-                      <Checkbox
-                        label="Remember me"
-                        name="isChecked"
-                        checked={dataInfor.isChecked}
-                        onChange={handleChange}
-                      />
+                      <Checkbox label="Remember me" name="isChecked" checked={true} onChange={() => console.log(123)} />
                       <Link className={cls('forgot-passwd')} to="/forgot-password">
                         Forgot password?
                       </Link>

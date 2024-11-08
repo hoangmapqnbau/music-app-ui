@@ -1,0 +1,138 @@
+aside {
+    background-color: #15151e;
+    border-radius: 8px;
+    padding-block-start: 40px;
+    height: calc(100dvh - 16px);
+}
+
+aside > * {
+    user-select: none;
+}
+
+.side-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.brand {
+    position: relative;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-inline-start: 8px;
+}
+
+.circle {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #0d90ee;
+    z-index: 1;
+    position: relative;
+    bottom: 10px;
+    left: 20px;
+}
+
+.brand-text {
+    font-size: 36px;
+    font-weight: bold;
+    z-index: 2;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #c0dfff, #ffffff);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Main items */
+.scroll-visible {
+    height: calc(100vh - 180px);
+    padding-right: 8px;
+    overflow: auto;
+}
+
+.scroll-visible::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scroll-visible::-webkit-scrollbar-thumb {
+    background-color: hsl(215, 15%, 65%);
+    border-radius: 4px;
+}
+
+.main-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 64px;
+    overflow-y: auto; 
+    padding-inline-end: 8px; 
+}
+
+.side-nav-item {
+    height: 48px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.side-nav-item :is(.item-label:hover, .active) {
+    background-color: rgba(29, 33, 38, 0.4);
+}
+
+.side-nav-item :is(.item-label:hover, .item-label:hover:not(.active) .item-icon > svg) {
+    color: #fff;
+}
+
+.item-label.active :is(.label-text, .item-icon > svg) {
+    color: #66d9ff;
+}
+
+.item-label::before {
+    content: "";
+    width: 5px;
+    height: 100%;
+    margin-right: 8px;
+    background-color: transparent;
+}
+
+.separate {
+    margin: 16px 0;
+}
+
+.item-label.active::before {
+    content: "";
+    background-color: #66d9ff;
+}
+
+.item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-text {
+    font-size: 16px;
+    text-decoration: none;
+    color: #79797c;
+    padding-inline-start: 32px;
+    padding-inline-end: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item-label {
+    font-size: 20px;
+    text-decoration: none;
+    color: hsl(215, 15%, 75%);
+    display: flex;
+    letter-spacing: 1.5px;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    height: 100%;
+}
