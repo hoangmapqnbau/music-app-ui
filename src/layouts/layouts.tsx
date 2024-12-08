@@ -5,6 +5,7 @@ import SideBar from './SideBar/sidebar';
 
 import bcx from '../utils/bindingClassNames';
 import Styles from './layout.module.css';
+import FooterBar from './FooterBar/FooterBar';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -19,7 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <main>
           <HeaderBar />
           <div className={cls('main-content')}>{children}</div>
-          <footer></footer>
+          <FooterBar />
         </main>
       </div>
     </div>

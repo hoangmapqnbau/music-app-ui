@@ -1,0 +1,69 @@
+footer {
+    display: flex;
+    width: 100%;
+    padding: 12px 24px;
+    align-items: center;
+}
+
+.infor-song {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    width: 30%;
+}
+
+.image {
+    border-radius: 8px;
+}
+
+.infor-music {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.infor-music .song-name, .end-duration {
+    color: #e3ebe0;
+}
+
+.infor-music .artist-name, .start-duration {
+    color: #78797a;
+}
+
+.music-action {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 40vw;
+}
+
+.music-action .actions,
+.music-action .music-duration {
+    display: flex;
+    align-items: center;
+}
+
+.music-action .actions {
+    gap: 24px;
+    color: #e3ebe0;
+    padding-block-start: 8px;
+    cursor: pointer;
+}
+
+.music-action .actions svg:hover {
+    color: rgb(206, 147, 216);
+}
+
+.music-control{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+}

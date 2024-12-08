@@ -29,21 +29,27 @@ const UserHeader = () => {
           alignItems: 'center',
           justifyContent: 'flex-start',
           borderRadius: '40px',
-          width: '220px',
-          padding: '6px 12px',
+          width: '240px',
+          padding: 'px 12px',
           display: 'flex',
           gap: '12px',
           textTransform: 'none',
           fontSize: 20,
         }}
       >
-        <Avatar
-          alt="Remy Sharp"
-          sx={{ width: 48, height: 48 }}
-          src="src/assets/png/cutiekim.jpg"
-        />
-        <Typography component="span" sx={{ color: '#fff', fontSize: 20 }}>
-          Hoàng
+        <Avatar alt="Remy Sharp" sx={{ width: 36, height: 36 }} src="src/assets/png/Rapper_DSK.png" />
+        <Typography
+          component="span"
+          sx={{
+            color: '#fff',
+            fontSize: 16,
+            maxWidth: '140px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Nguyễn Huy Hoàng 12
         </Typography>
         <ArrowDropDownIcon sx={{ marginLeft: 'auto' }} />
       </Button>

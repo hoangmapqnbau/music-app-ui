@@ -3,13 +3,15 @@
     display: flex;
     padding: 8px;
     gap: 8px;
+    max-width: 166px;
     flex-direction: column;
     user-select: none;
     cursor: pointer;
+    flex: 1 1 0;
 }
 
 .music-card:hover {
-    background-color: rgba(68,71,79, .8);
+    background-color: rgba(68, 71, 79, .8);
     border-radius: 8px;
 }
 
@@ -23,7 +25,7 @@
 }
 
 .music-card * {
-    width: 190px;
+    width: 150px;
 }
 
 .text-truncate {
@@ -34,9 +36,9 @@
 
 .image-card {
     border-radius: 8px;
-    max-width: 190px;
-    max-height: 187px;
-    min-width: 190px;
-    min-height: 187px;
+    max-width: 150px;
+    max-height: 147px;
+    min-width: 150px;
+    min-height: 147px;
     object-fit: cover;
 }

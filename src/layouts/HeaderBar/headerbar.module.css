@@ -2,10 +2,10 @@ header {
     background-color: #121319;
     width: 100%;
     height: var(--header-height);
-    border-radius: 8px 0 0 0;
+    border-radius: 8px 8px 0 0;
     padding: 0 32px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-block-start: 16px;
+    padding-block-start: 8px;
 }

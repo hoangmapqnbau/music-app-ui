@@ -4,11 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 import UserProvider from './store/UserStore/UserProvider.tsx';
+import MusicProvider from './store/MusicStore/MusicProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
       <UserProvider>
-        <App />
+        <MusicProvider>
+          <App />
+        </MusicProvider>
       </UserProvider>
   </BrowserRouter>,
 );

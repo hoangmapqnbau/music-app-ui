@@ -5,4 +5,7 @@ const USER_URI = `${BASE}/users`;
 const AUTH_LOGIN_URI = `${BASE}/auth/login`
 
 
-export { USER_URI, AUTH_LOGIN_URI };
+const HTTP_STATUS_OK = 200;
+
+
+export { BASE, USER_URI, AUTH_LOGIN_URI, HTTP_STATUS_OK };

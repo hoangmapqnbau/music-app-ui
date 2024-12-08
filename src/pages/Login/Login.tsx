@@ -18,7 +18,8 @@ import { clearUserFields, userLoggedIn } from '../../store/UserStore/UserAction'
 import validate from '../../utils/userValidation';
 import useLoading from '../../hooks/useLoading';
 import useUserContext from '../../hooks/useUserContext';
-import { setCookie  } from '../../utils/cookie';
+import { setCookie } from '../../utils/cookie';
+import useAuthenticated from '../../hooks/useAuthenticate';
 
 const cls = bcx(styles);
 
@@ -37,7 +38,8 @@ const LoginPage = () => {
   const [errors, setErrors] = useState(INIT_USER_MODEL);
   const [notification, setNotification] = useState<TNotification>({ show: false, type: 'success', text: '' });
   const timeReference = useRef(0);
-  const { currentUser, dispatch } = useUserContext();
+  const { dispatch } = useUserContext();
+  const { currentUser } = useAuthenticated();
 
   useEffect(() => {
     if (notification.show) {
@@ -75,7 +77,7 @@ const LoginPage = () => {
   };
 
   const registerUser = async () => {
-    const { username: email, password, passWordHint, reTypePassword, fullName }: IUser = currentUser;
+    const { username: email, password, passWordHint, reTypePassword, fullName }: IUser = user;
     const userObject = { email: email?.trim(), password, passWordHint, reTypePassword, fullName };
 
     try {
@@ -138,6 +140,10 @@ const LoginPage = () => {
       triggerNotification('error', error.message || 'An error occurred');
     }
   };
+
+  useEffect(() => {
+    if (currentUser?.authenticated) navigate('/');
+  }, [currentUser]);
 
   const triggerNotification = (type: 'success' | 'error', text: string) => {
     setNotification((prev) => ({
