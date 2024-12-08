@@ -1,6 +1,6 @@
 export interface IMusicCard {
-  id?: string | number;
-  songname?: string;
-  artists?: string;
-  image?: string;
+  _id?: string | number;
+  songName?: string;
+  artist?: string;
+  image: string;
 }

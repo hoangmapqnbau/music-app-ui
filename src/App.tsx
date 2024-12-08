@@ -7,6 +7,7 @@ function App() {
     <Routes>
       {publicRoutes?.length
         ? publicRoutes.map(({ path, element: Component }) => {
+            if(path == '/login') return  <Route key={path} path={path} element={<><Component /></>} />;
             return <Route key={path} path={path} element={<MainLayout><Component /></MainLayout>} />;
           })
         : null}

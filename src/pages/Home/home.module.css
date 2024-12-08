@@ -2,23 +2,29 @@
     color: #f1faee;
 }
 
+.center-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
 .recently-played .played-items {
     display: flex;
     align-items: flex-start;
     gap: 32px;
     width: calc(100dvw - var(--sidebar-width) - var(--padding-tr) - (var(--content-padding) * 2));
-    overflow-y: hidden;
-    overflow-x: auto;
-    padding-bottom: 8px;
     transition: transform 0.3s ease;
+    overflow: auto;
 }
 
 .recently-played .played-items::-webkit-scrollbar {
-    height: 8px;
+    height: 0;
 }
 
 .recently-played:hover .played-items::-webkit-scrollbar {
-    height: 8px;
+    height: 0;
     visibility: visible;
 }
 
@@ -30,4 +36,106 @@
 .recently-played:hover .played-items::-webkit-scrollbar-thumb {
     background-color: hsl(215, 15%, 65%);
     border-radius: 4px;
+}
+
+.trending-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 400px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.trending-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+.trending-items::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: hsl(215, 15%, 65%);
+    border-radius: 4px;
+}
+
+.play-duration {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    background-color: #1c1c1c;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.list-item:hover::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: hsla(0,0%,100%,0.1);
+    border-radius: 8px;
+}
+
+.list-item .image-song {
+    position: relative;
+    margin-right: 15px;
+    align-items: center;
+}
+
+.list-item .image-song .overlay {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+.list-item:hover .overlay {
+    display: block;    
+}
+
+.list-item:hover .image {
+    opacity: .3;
+} 
+
+.image-song .image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.list-item .infor-music {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.list-item .infor-music>span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.list-item .infor-music .song-name {
+    color: #e3ebe0;
+}
+
+.list-item .infor-music .artist-name {
+    color: #78797a;
 }
