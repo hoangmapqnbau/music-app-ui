@@ -1,8 +1,19 @@
-import { Action } from "./MusicProvider";
+import { IMusic } from '../../layouts/FooterBar/FooterBar';
+import { Action } from './MusicProvider';
 
-const setCurrentSong= (payload: string |undefined): Action => ({
+const setCurrentSong = (payload: string | undefined): Action => ({
   payload,
   type: 'SET_CURRENT_SONG',
 });
 
-export { setCurrentSong };
+const setSongPlaying = (payload: boolean): Action =>( {
+  type: 'SONG_PLAYING',
+  payload
+});
+
+const setSongsRecently = (payload: IMusic[]): Action => ({
+  type: "SET_SONGS_RECENTLY",
+  payload
+})
+
+export { setCurrentSong, setSongPlaying, setSongsRecently };
