@@ -7,21 +7,23 @@ import MusicCard from '../../../components/MusicCard/MusicCard';
 import { HTTP_STATUS_OK } from '../../../constant/api';
 import axiosInstance from '../../../axios-instance/axiosInstance';
 import { IMusicCard } from '../../../components/MusicCard/music-card.interface';
-import { setCurrentSong } from '../../../store/MusicStore/actions';
+import { setSongsRecently, setCurrentSong } from '../../../store/MusicStore/actions';
 import useMusicStore from '../../../hooks/useMusicStore';
+import { IMusic } from '../../../layouts/FooterBar/FooterBar';
 
 const cls = bcx(styles);
 
 const MusicPanel = ({ subject }: { subject: string }) => {
-  const [recently, setRecently] = useState([]);
+  const [recently, setRecently] = useState<IMusic[]>([]);
   const context = useMusicStore();
 
   const getRecentlySongs = async () => {
     const response = await axiosInstance.get('music/recent');
 
     if (response.status == HTTP_STATUS_OK) {
-      const data = await response.data;
+      const data: IMusic[] = await response.data;
       setRecently(data);
+      context?.dispatch(setSongsRecently((data as IMusic[])));
       context?.dispatch(setCurrentSong(data[0]._id?.toString()));
     }
   };
